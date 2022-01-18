@@ -14,3 +14,16 @@ jobs:
         with:
           name: ${{ github.event_name }}-${{ github.run_id }}-payload
           path: ${{ github.event_name }}-${{ github.run_id }}-payload.json
+  run-action:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Run GH action from dev branch
+        id: sorting-hat
+        # Replace v1 with the SODEV branch name when testing
+        uses: buildcom/the-sorting-hat@SODEV-33350
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+      - name: Get output
+        env:
+            CURRENT_LABELS: ${{ steps.sorting-hat.outputs.labels }}
+        run: echo "$CURRENT_LABELS"
