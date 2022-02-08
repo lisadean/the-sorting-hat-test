@@ -16,12 +16,15 @@ jobs:
   things:
     runs-on: ubuntu-latest
     needs: [stuff]
-    if: always() && ${{ needs.stuff.result }} === 'failure' && ${{ needs.stuff.outputs.step-result }} === 'success'
+    # if: always() && ${{ needs.stuff.result }} === 'failure' && ${{ needs.stuff.outputs.step-result }} === 'success'
+    if: always()
     steps:
-      - run: echo 'first step success, job failure'
-  things2:
-    runs-on: ubuntu-latest
-    needs: [stuff]
-    if: always() && ${{ needs.stuff.result }} === 'failure' && ${{ needs.stuff.outputs.step-result }} === 'failure'
-    steps:
-      - run: echo 'first step failure, job failure'
+      - run: |
+          echo 'needs.stuff.result - "${{ needs.stuff.result }}"'
+          echo 'needs.stuff.outputs.step-result - "${{ needs.stuff.outputs.step-result }}"'
+  # things2:
+  #  runs-on: ubuntu-latest
+  #  needs: [stuff]
+  #  if: always() && ${{ needs.stuff.result }} === 'failure' && ${{ needs.stuff.outputs.step-result }} === 'failure'
+  #  steps:
+  #    - run: echo 'first step failure, job failure'
