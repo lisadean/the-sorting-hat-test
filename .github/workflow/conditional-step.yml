@@ -1,0 +1,27 @@
+name: Push to main
+on:
+  push:
+    branches:
+      - 'main'
+jobs:
+  stuff:
+    runs-on: ubuntu-latest
+    outputs:
+      step-result: ${{ steps.first-step.result }}
+    steps:
+      - id: first-step
+        run: exit 0
+      - id: second-step
+        run: exit 1
+  things:
+    runs-on: ubuntu-latest
+    needs: [stuff]
+    if: ${{ needs.stuff.result }} === 'failure' && ${{ needs.stuff.outputs.step-result }} === 'success'
+    steps:
+      - run: echo 'first step success, job failure'
+  things2:
+    runs-on: ubuntu-latest
+    needs: [stuff]
+    if: ${{ needs.stuff.result }} === 'failure' && ${{ needs.stuff.outputs.step-result }} === 'failure'
+    steps:
+      - run: echo 'first step failure, job failure'
