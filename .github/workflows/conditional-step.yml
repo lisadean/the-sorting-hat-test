@@ -19,6 +19,6 @@ jobs:
     # if: always() && (needs.stuff.result == 'success' || needs.stuff2.result == 'success')
     # if: always() && ${{ needs.stuff.result }} === 'failure' && ${{ needs.stuff.outputs.step-result }} === 'success'
     # if: always()
-    if: always() && needs.stuff.result == 'failure'
+    if: needs.stuff.result == 'failure'
     steps:
       - run: echo 'things'
