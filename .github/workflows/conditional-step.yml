@@ -6,7 +6,7 @@ on:
 jobs:
   stuff:
     runs-on: ubuntu-latest
-    if: 1 === 0
+    if: 1 == 0
     steps:
       - run: echo 'stuff'
   things:
