@@ -6,12 +6,10 @@ on:
 jobs:
   stuff:
     runs-on: ubuntu-latest
-    if: 1 == 0
     steps:
-      - run: echo 'stuff'
+      - run: exit 1
   stuff2:
     runs-on: ubuntu-latest
-    if: 1 == 1
     steps:
       - run: echo 'stuff'
   
