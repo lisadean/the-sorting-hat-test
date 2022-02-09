@@ -16,7 +16,7 @@ jobs:
   stuff3:
     runs-on: ubuntu-latest
     needs: stuff
-    if: always() && needs.stuff.result === 'failure'
+    if: always() && needs.stuff.result == 'failure'
     steps:
       - run: echo 'stuff3' && exit 0
   things:
