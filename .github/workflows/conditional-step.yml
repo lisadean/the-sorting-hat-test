@@ -7,18 +7,28 @@ jobs:
   stuff:
     runs-on: ubuntu-latest
     steps:
-      - run: exit 1
+      - run: exit 0
   stuff2:
     runs-on: ubuntu-latest
+    needs: stuff
     steps:
-      - run: echo 'stuff'
-  
+      - run: exit 0
+  stuff3:
+    runs-on: ubuntu-latest
+    needs: stuff
+    if: always() && needs.stuff.result === 'failure'
+    steps:
+      - run: echo 'stuff3' && exit 0
   things:
     runs-on: ubuntu-latest
-    needs: [stuff, stuff2]
-    # if: always() && (needs.stuff.result == 'success' || needs.stuff2.result == 'success')
-    # if: always() && ${{ needs.stuff.result }} === 'failure' && ${{ needs.stuff.outputs.step-result }} === 'success'
-    # if: always()
-    if: needs.stuff.result == 'failure'
+    needs: [stuff, stuff2, stuff3]
+    if: always()
     steps:
-      - run: echo 'things'
+      - run: |
+          [ ${STUFF} = 'success' ] && [ ${STUFF2} = 'success' ] && exit 0
+          [ ${STUFF3} = 'success' ] && exit 0
+          exit 1
+        env:
+          STUFF: ${{ needs.stuff.result }}
+          STUFF2: ${{ needs.stuff2.result }}
+          STUFF3: ${{ needs.stuff3.result }}
